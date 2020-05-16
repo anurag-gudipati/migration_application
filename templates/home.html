@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+{% block info %}
+
+
+    <form >
+        <label for="Source">Choose SourceDB:</label>
+        <select id="Source" name="Source">
+            <option value="SQL">SQL</option>
+            <option value="MongoDB">MongoDB</option>
+        </select>
+        <br>
+        <label for="Target">Choose TargetDB:</label>
+        <select id="Target" name="TargetDB">
+            <option value="SQL">SQL</option>
+            <option value="MongoDB">MongoDB</option>
+        </select>
+        <br>
+        <button onclick=getvalue()>confirm </button>
+         <br>
+     <script>
+function getvalue(){
+var z = document.getElementById('Source').value;
+var y = document.getElementById('Target').value;
+if(z !== y) {
+
+    if (z === "SQL" && y === "MongoDB") {
+
+        window.open("http://127.0.0.1:5000/sql");
+    } else {
+        window.open("http://127.0.0.1:5000/mongo");
+    }
+}
+else{
+    alert("Source and Target cannot be same")
+}
+  }
+</script>
+
+
+    </form>
+
+{% endblock %}
+
