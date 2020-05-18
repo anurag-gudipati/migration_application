@@ -69,3 +69,19 @@ app.run(debug=True)
 
 
 
+'''for i in total_db:
+    if(i!='admin' and i!='local'):
+        today = date.today()
+        sample_name = i + '_ddl_' + str(today)
+        f = open(r'C:\Users\Anurag\PycharmProjects\Temp\%s.sql' % sample_name, 'w')
+        file_name = i + '_dml' + str(today)
+        f1 = open(r'C:\Users\Anurag\PycharmProjects\Temp\%s.sql' % file_name, 'w')
+        file_obj = ddl_db(i, f)
+        db = mon_connection.get_database(i)
+        collection_names = db.list_collection_names()
+        for j in collection_names:
+            all_documents = db[j].find({})
+            ddl_tb(i, file_obj, j, all_documents)
+            all_documents = db[j].find({})
+            dml_val(i, j, all_documents, f1)
+'''

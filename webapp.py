@@ -2,37 +2,16 @@ from flask import Flask, render_template, request, redirect, url_for
 
 app = Flask(__name__)
 
-post = [
-    {
-        'author': 'pavan Dandu',
-        'title': 'first post',
-        'content': 'content of the post',
-        'date_posted': 'may 12,2020'
-
-    },
-    {
-        'author': 'chaitanya Thummoju',
-        'title': 'latest  post',
-        'content': 'content of the post',
-        'date_posted': 'may 12,2020'
-    },
-    {
-        'author': 'Anurag Gudipati',
-        'title': 'Random post',
-        'content': 'content of the post',
-        'date_posted': 'may 12,2020'
-    }
-]
-
-
 @app.route("/", methods=['GET', 'POST'])
 @app.route("/home", methods=['GET', 'POST'])
 def home():
     error = ""
+    source_DB=""
+    target_DB=""
     if request.method == 'POST':
-        source_DB = request.form['source_DB']
-        target_DB = request.form['target_DB']
-        print(source_DB)
+        source_DB = request.form['Source']
+        target_DB = request.form['Target']
+    print(source_DB,target_DB)
 
     return render_template('home.html', posts=post)
 
@@ -51,7 +30,7 @@ def sq():
         user = request.form['User']
         passwd = request.form['password']
         dbname = request.form['DBName']
-        print(host)
+        print(host,user,passwd,dbname)
         if len(host) == 0 or len(user) == 0 or len(passwd) == 0 or len(dbname) == 0:
             error = "Please fill all the fields"
 
