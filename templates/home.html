@@ -6,24 +6,24 @@
         <label for="Source">Choose SourceDB:</label>
         <select id="Source" name="Source">
             <option value="SQL">SQL</option>
-            <option value="MongoDB">MongoDB</option>
+            <option value="Mongo">Mongo</option>
         </select>
         <br>
         <label for="Target">Choose TargetDB:</label>
         <select id="Target" name="TargetDB">
             <option value="SQL">SQL</option>
-            <option value="MongoDB">MongoDB</option>
+            <option value="Mongo">Mongo</option>
         </select>
         <br>
         <button onclick=getvalue()>confirm </button>
          <br>
      <script>
 function getvalue(){
-var z = document.getElementById('Source').value;
-var y = document.getElementById('Target').value;
-if(z !== y) {
+var source_DB = document.getElementById('Source').value;
+var target_DB = document.getElementById('Target').value;
+if(source_DB !== target_DB ){
 
-    if (z === "SQL" && y === "MongoDB") {
+    if (source_DB === "SQL" && target_DB === "Mongo") {
 
         window.open("http://127.0.0.1:5000/sql");
     } else {

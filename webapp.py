@@ -25,9 +25,15 @@ post = [
 ]
 
 
-@app.route("/")
-@app.route("/home")
+@app.route("/", methods=['GET', 'POST'])
+@app.route("/home", methods=['GET', 'POST'])
 def home():
+    error = ""
+    if request.method == 'POST':
+        source_DB = request.form['source_DB']
+        target_DB = request.form['target_DB']
+        print(source_DB)
+
     return render_template('home.html', posts=post)
 
 
