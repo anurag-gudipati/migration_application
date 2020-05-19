@@ -3,11 +3,25 @@
 <form method="POST">
 <label for="URL">URL:</label><br>
   <input type="URL" id="URL" name="URL"><br>
-  <label for="DBName">Database Name:</label><br>
-  <input type="text" id="DBName" name="DBName">
+
  <br>
 
-  <button type="submit">convert </button>
+  <button onclick="process()">convert </button>
+    <script>
+    function  process() {
+       var src = localStorage.getItem('Source')
+
+      if(src === "Mongo"){
+        window.open("http://127.0.0.1:5000/sql");
+      }
+      else
+      {
+        window.open("http://127.0.0.1:5000/thank");
+      }
+      window.close("http://127.0.0.1:5000/mongo");
+    }
+
+  </script>
 
     </form>
 {% endblock %}

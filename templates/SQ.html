@@ -8,8 +8,26 @@
   <label for="password">password:</label><br>
   <input type="password" id="password" name="password"><br>
   <label for="DBName">Database Name:</label><br>
-  <input type="text" id="DBName" name="DBName">
-  <input type="submit" value="convert">
+  <input type="text" id="DBName" name="DBName"><br>
+  <br>
+  <button onclick="getval()" >convert</button>
+
+  <script>
+    function  getval() {
+       var src = localStorage.getItem('Source')
+
+      if(src === "SQL"){
+        window.open("http://127.0.0.1:5000/mongo");
+      }
+      else
+      {
+        window.open("http://127.0.0.1:5000/thank");
+      }
+      window.close("http://127.0.0.1:5000/sql");
+
+    }
+
+  </script>
 
 
 </form>

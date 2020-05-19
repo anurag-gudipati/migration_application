@@ -1,5 +1,6 @@
 import pymongo
 import datetime
+import re
 from bson import code, Code
 from datetime import date
 from values_dml import dml_val
@@ -55,18 +56,11 @@ def md():
     error = ""
     if request.method == 'POST':
         url = request.form['URL']
-        dbname = request.form['DBName']
+        #dbname = request.form['DBName']
     return render_template('MDB.html', title='mongo', message=error)
 
 
-@app.route("/dec")
-def dec():
-    return render_template('dec.js', title='dec')
 
-
-@app.route("/sub")
-def de():
-    return render_template('sub.php', title='sub')
 
 ''' For running the web application'''
 if __name__ == "__main__":
