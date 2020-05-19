@@ -73,6 +73,37 @@ def json():
 def migration_start():
 
     print(home.source_DB,home.target_DB)
+    ''' for mysql database'''
+    mysql_connection = mysql.connector.connect(
+        host='127.0.0.1',
+        user="root",
+        passwd="India")
+    cursor = mysql_connection.cursor()
+    result = cursor.fetchall()
+    for i in range(len(result)):
+        print(result[i])
+
+    # for mongo database
+    mon_connection = MongoClient(
+        "mongodb://sample:root@cluster0-shard-00-00-nkket.mongodb.net:27017,cluster0-shard-00-01-nkket.mongodb.net:27017,cluster0-shard-00-02-nkket.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true&w=majority")
+    total_db = mon_connection.list_database_names()
+    ''' ENDS HERE'''
+
+    ''' SQL TO MONGO STARTS HERE'''
+    mysql_connection = mysql.connector.connect(
+        host='127.0.0.1',
+        user="root",
+        passwd="India",
+        database="sakila")
+    mon_db = mon_connection["temp_sakila"]
+    cursor = mysql_connection.cursor()
+    cursor.execute("show tables")
+    fet_table_names = cursor.fetchall()
+    print(fet_table_names)
+    li = list(fet_table_names)
+    # for  creating database in mongo db'''
+    db = mon_connection['sakila']
+    '''end here '''
 
     if(home.source_DB == "SQL"):
         for i in total_db:
@@ -127,37 +158,6 @@ if __name__ == "__main__":
 
 '''Mongo and SQL'''
 
-''' for mysql database'''
-mysql_connection = mysql.connector.connect(
-  host='127.0.0.1',
-  user="root",
-  passwd="India")
-cursor = mysql_connection.cursor()
-result = cursor.fetchall()
-for i in range(len(result)):
-    print(result[i])
-
-
-# for mongo database
-mon_connection = MongoClient("mongodb://sample:root@cluster0-shard-00-00-nkket.mongodb.net:27017,cluster0-shard-00-01-nkket.mongodb.net:27017,cluster0-shard-00-02-nkket.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true&w=majority")
-total_db = mon_connection.list_database_names()
-''' ENDS HERE'''
-
-''' SQL TO MONGO STARTS HERE'''
-mysql_connection = mysql.connector.connect(
-  host='127.0.0.1',
-  user="root",
-  passwd="India",
-  database="sakila")
-mon_db = mon_connection["temp_sakila"]
-cursor = mysql_connection.cursor()
-cursor.execute("show tables")
-fet_table_names = cursor.fetchall()
-print(fet_table_names)
-li = list(fet_table_names)
-#for  creating database in mongo db'''
-db=mon_connection['sakila']
-'''end here '''
 
 
 
