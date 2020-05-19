@@ -12,12 +12,16 @@ from datetime import date
 from flask import Flask, render_template, request, redirect, url_for
 app = Flask(__name__)
 
+
 source_DB=""
 target_DB=""
 host=""
 user=""
 passwd=""
 dbname=""
+
+
+
 @app.route("/", methods=['GET', 'POST'])
 @app.route("/home", methods=['GET', 'POST'])
 def home():
@@ -25,7 +29,7 @@ def home():
     if request.method == 'POST':
         source_DB = request.form['Source']
         target_DB = request.form['Target']
-        #print(source_DB,target_DB)
+        print(source_DB,target_DB)
 
     return render_template('home.html')
 
@@ -59,12 +63,68 @@ def md():
         #dbname = request.form['DBName']
     return render_template('MDB.html', title='mongo', message=error)
 
+@app.route('/thank')
+def json():
+    return render_template('thank.html')
+
+
+#background process happening without any refreshing
+@app.route('/background_process_test')
+def migration_start():
+    print("inside migration_start")
+    print("WHAT IS SOURCEdb",source_DB)
+    if(source_DB == "SQL"):
+        for i in total_db:
+            if (i != 'admin' and i != 'local'):
+                today = date.today()
+                sample_name = i + '_ddl_' + str(today)
+                f = open(r'C:\Users\Anurag\PycharmProjects\Temp\%s.sql' % sample_name, 'w')
+                file_name = i + '_dml' + str(today)
+                f1 = open(r'C:\Users\Anurag\PycharmProjects\Temp\%s.sql' % file_name, 'w')
+                file_obj = ddl_db(i, f)
+                db = mon_connection.get_database(i)
+                collection_names = db.list_collection_names()
+                for j in collection_names:
+                    all_documents = db[j].find({})
+                    ddl_tb(i, file_obj, j, all_documents)
+                    all_documents = db[j].find({})
+                    dml_val(i, j, all_documents, f1)
+    elif(source_DB=="Mongo"):
+        for i in fet_table_names:
+            # print(str(i))
+            mon_collection = mon_db[str(i)]
+            statement = "describe " + re.sub('[\[\'\]]', '', str(list(i))) + ";"
+            print(statement)
+            cursor.execute(statement)
+            fet_column_names = cursor.fetchall()
+            col_names = []
+            for j in fet_column_names:
+                col_names.append(j[0])
+                statement = "select *from " + re.sub('[\[\'\]]', '', str(list(i))) + ";"
+                cursor.execute(statement)
+                values = cursor.fetchall()
+                for k in values:
+                    temp_dict = dict(zip(col_names, k))
+                    if (i == ('address',)):
+                        temp_dict['location'] = 1
+                        if (i == ('film',)):
+                            print(temp_dict)
+                            # x = mon_collection.insert_one(temp_dict)
+                            # print(x.inserted_id)
+                            # print(temp_dict)
+            col_names = []
+    else:
+        print("nothing")
+    return ("nothing")
 
 
 
 ''' For running the web application'''
 if __name__ == "__main__":
     app.run(debug=True)
+
+
+'''Mongo and SQL'''
 
 ''' for mysql database'''
 mysql_connection = mysql.connector.connect(
@@ -100,48 +160,9 @@ db=mon_connection['sakila']
 
 
 
+
 ''' For Mongo to SQL Database'''
 # for creating all the databases in a cluster
-if(source_DB == "SQL"):
-    for i in total_db:
-        if (i != 'admin' and i != 'local'):
-            today = date.today()
-            sample_name = i + '_ddl_' + str(today)
-            f = open(r'C:\Users\Anurag\PycharmProjects\Temp\%s.sql' % sample_name, 'w')
-            file_name = i + '_dml' + str(today)
-            f1 = open(r'C:\Users\Anurag\PycharmProjects\Temp\%s.sql' % file_name, 'w')
-            file_obj = ddl_db(i, f)
-            db = mon_connection.get_database(i)
-            collection_names = db.list_collection_names()
-            for j in collection_names:
-                all_documents = db[j].find({})
-                ddl_tb(i, file_obj, j, all_documents)
-                all_documents = db[j].find({})
-                dml_val(i, j, all_documents, f1)
-elif(source_DB=="Mongo"):
-    for i in fet_table_names:
-        # print(str(i))
-        mon_collection = mon_db[str(i)]
-        statement = "describe " + re.sub('[\[\'\]]', '', str(list(i))) + ";"
-        print(statement)
-        cursor.execute(statement)
-        fet_column_names = cursor.fetchall()
-        col_names = []
-        for j in fet_column_names:
-            col_names.append(j[0])
-        statement = "select *from " + re.sub('[\[\'\]]', '', str(list(i))) + ";"
-        cursor.execute(statement)
-        values = cursor.fetchall()
-        for k in values:
-            temp_dict = dict(zip(col_names, k))
-            if (i == ('address',)):
-                temp_dict['location'] = 1
-            if (i == ('film',)):
-                print(temp_dict)
-            # x = mon_collection.insert_one(temp_dict)
-            # print(x.inserted_id)
-            # print(temp_dict)
-        col_names = []
 
 
 
