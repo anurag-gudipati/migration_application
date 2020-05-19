@@ -27,9 +27,9 @@ dbname=""
 def home():
     error = ""
     if request.method == 'POST':
-        source_DB = request.form['Source']
-        target_DB = request.form['Target']
-        print(source_DB,target_DB)
+        home.source_DB = request.form['Source']
+        home.target_DB = request.form['Target']
+
 
     return render_template('home.html')
 
@@ -71,9 +71,10 @@ def json():
 #background process happening without any refreshing
 @app.route('/background_process_test')
 def migration_start():
-    print("inside migration_start")
-    print("WHAT IS SOURCEdb",source_DB)
-    if(source_DB == "SQL"):
+
+    print(home.source_DB,home.target_DB)
+
+    if(home.source_DB == "SQL"):
         for i in total_db:
             if (i != 'admin' and i != 'local'):
                 today = date.today()
@@ -89,7 +90,7 @@ def migration_start():
                     ddl_tb(i, file_obj, j, all_documents)
                     all_documents = db[j].find({})
                     dml_val(i, j, all_documents, f1)
-    elif(source_DB=="Mongo"):
+    elif(home.source_DB=="Mongo"):
         for i in fet_table_names:
             # print(str(i))
             mon_collection = mon_db[str(i)]
