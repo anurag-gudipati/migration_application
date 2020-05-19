@@ -7,7 +7,7 @@ host=""
 user=""
 passwd=""
 dbname=""
-
+#creating home page
 @app.route("/", methods=['GET', 'POST'])
 @app.route("/home", methods=['GET', 'POST'])
 def home():
@@ -58,7 +58,7 @@ def json():
 #background process happening without any refreshing
 @app.route('/background_process_test')
 def background_process_test():
-    print (home.source_DB,home.target_DB)
+    print(home.source_DB,home.target_DB)
     return ("nothing")
 
 
