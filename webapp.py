@@ -12,12 +12,11 @@ dbname=""
 @app.route("/home", methods=['GET', 'POST'])
 def home():
     error = ""
-    #source_DB=""
-    #target_DB=""
+
     if request.method == 'POST':
-        source_DB = request.form['Source']
-        target_DB = request.form['Target']
-    #print(source_DB,target_DB)
+        home.source_DB = request.form['Source']
+        home.target_DB = request.form['Target']
+
 
     return render_template('home.html')
 
@@ -59,7 +58,7 @@ def json():
 #background process happening without any refreshing
 @app.route('/background_process_test')
 def background_process_test():
-    print ("Hello")
+    print (home.source_DB,home.target_DB)
     return ("nothing")
 
 
