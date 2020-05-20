@@ -60,6 +60,78 @@ def json():
 @app.route('/background_process_test')
 def migration_start():
     print(home.source_DB)
+    if(home.source_DB=="SQL"):
+        mon_connection = MongoClient(md.url)
+        ''''''
+        mysql_connection = mysql.connector.connect(
+            host=sq.host,
+            user=sq.user,
+            passwd=sq.passwd,
+            database=sq.dbname)
+        mon_db = mon_connection[sq.dbname]
+        cursor = mysql_connection.cursor()
+        cursor.execute("show tables")
+        fet_table_names = cursor.fetchall()
+        print(fet_table_names)
+        li = list(fet_table_names)
+        # for  creating database in mongo db'''
+        db = mon_connection['sakila']
+        '''end here '''
+        for i in fet_table_names:
+            # print(str(i))
+            mon_collection = mon_db[str(i)]
+            statement = "describe " + re.sub('[\[\'\]]', '', str(list(i))) + ";"
+            print(statement)
+            cursor.execute(statement)
+            fet_column_names = cursor.fetchall()
+            col_names = []
+            for j in fet_column_names:
+                col_names.append(j[0])
+            statement = "select *from " + re.sub('[\[\'\]]', '', str(list(i))) + ";"
+            cursor.execute(statement)
+            values = cursor.fetchall()
+            for k in values:
+                temp_dict = dict(zip(col_names, k))
+                if (i == ('address',)):
+                    temp_dict['location'] = 1
+                if (i == ('film',)):
+                    print(temp_dict)
+                # x = mon_collection.insert_one(temp_dict)
+                # print(x.inserted_id)
+                # print(temp_dict)
+            col_names = []
+    elif(home.source_DB=="Mongo"):
+        ''' from Mongodb to mysql database '''
+        mysql_connection = mysql.connector.connect(
+            host=sq.host,
+            user=sq.user,
+            passwd=sq.passwd)
+        cursor = mysql_connection.cursor()
+        '''end here'''
+
+        ''' Only Connection for Mongo'''
+        mon_connection = MongoClient(
+            "mongodb://sample:root@cluster0-shard-00-00-nkket.mongodb.net:27017,cluster0-shard-00-01-nkket.mongodb.net:27017,cluster0-shard-00-02-nkket.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true&w=majority")
+        total_db = mon_connection.list_database_names()
+        '''End Here'''
+        ''' This is for Mongo All Databases to SQL All Databases'''
+        for i in total_db:
+            if (i != 'admin' and i != 'local'):
+                today = date.today()
+                sample_name = i + '_ddl_' + str(today)
+                f = open(r'C:\Users\Anurag\PycharmProjects\Temp\%s.sql' % sample_name, 'w')
+                file_name = i + '_dml' + str(today)
+                f1 = open(r'C:\Users\Anurag\PycharmProjects\Temp\%s.sql' % file_name, 'w')
+                file_obj = ddl_db(i, f)
+                db = mon_connection.get_database(i)
+                collection_names = db.list_collection_names()
+                for j in collection_names:
+                    all_documents = db[j].find({})
+                    ddl_tb(i, file_obj, j, all_documents)
+                    all_documents = db[j].find({})
+                    dml_val(i, j, all_documents, f1)
+        ''' End Here For Mongo to SQL ALl Databases'''
+    print(home.source_DB)
     print(sq.host)
     print(md.url)
 
