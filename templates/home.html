@@ -22,20 +22,22 @@
 function getvalue(){
 var source_DB = document.getElementById('Source').value;
 var target_DB = document.getElementById('Target').value;
-localStorage.setItem('Source',source_DB)
+localStorage.setItem('Source',source_DB);
+//window.open("http://127.0.0.1:5000/home");
 if(source_DB !== target_DB ){
 
     if (source_DB === "SQL" && target_DB === "Mongo") {
 
         window.open("http://127.0.0.1:5000/sql");
     } else {
+
         window.open("http://127.0.0.1:5000/mongo");
     }
 }
 else{
     alert("Source and Target cannot be same");
 }
-window.close("http://127.0.0.1:5000/home");
+//window.close("http://127.0.0.1:5000/home");
   }
 </script>
 

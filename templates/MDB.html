@@ -10,7 +10,8 @@
     <script>
     function  process() {
        var src = localStorage.getItem('Source')
-
+        alert('checking localstorage');
+alert(localStorage.getItem('Source'));
       if(src === "Mongo"){
         window.open("http://127.0.0.1:5000/sql");
       }
@@ -18,7 +19,7 @@
       {
         window.open("http://127.0.0.1:5000/thank");
       }
-      window.close("http://127.0.0.1:5000/mongo");
+     // window.close("http://127.0.0.1:5000/mongo");
     }
 
   </script>
